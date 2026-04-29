@@ -4,37 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AleePDF - Ücretsiz PDF Araçları</title>
+    <meta name="description" content="PDF birleştirme, bölme, döndürme, sıkıştırma ve daha fazlası. Hızlı, güvenli ve tarayıcı tabanlı.">
     
-    <!-- PDF Kütüphaneleri -->
+    <!-- CDN Kütüphaneleri -->
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
     <script src="https://unpkg.com/@pdf-lib/fontkit@1.1.1/dist/fontkit.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --primary: #6366f1; --primary-dark: #4f46e5; --primary-light: #818cf8;
             --secondary: #06b6d4; --accent: #22c55e; --warning: #f59e0b; --danger: #ef4444;
             --dark: #0f172a; --light: #f8fafc; --light-2: #e2e8f0; --text-dark: #1e293b; --text-light: #64748b;
-            --shadow: 0 10px 40px rgba(0,0,0,0.1); --radius: 16px;
+            --shadow: 0 10px 40px rgba(0,0,0,0.1); --radius: 16px; --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
         }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--light); color: var(--text-dark); line-height: 1.6; }
         body.dark-mode { --light: #0a0f1d; --light-2: #151f2e; --text-dark: #f1f5f9; --text-light: #94a3b8; }
         
         /* Navbar */
-        .navbar { position: fixed; top: 0; left: 0; right: 0; height: 70px; background: rgba(255,255,255,0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--light-2); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; z-index: 1000; }
+        .navbar { position: fixed; top: 0; left: 0; right: 0; height: 70px; background: rgba(255,255,255,0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--light-2); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; z-index: 1000; transition: var(--transition); }
         body.dark-mode .navbar { background: rgba(10,15,29,0.95); }
         .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-dark); }
         .nav-brand-icon { width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary), var(--primary-light)); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; }
         .nav-brand-text { font-size: 1.4rem; font-weight: 700; }
         .nav-brand-text span { color: var(--primary); }
         .nav-links { display: flex; gap: 8px; list-style: none; }
-        .nav-links a { text-decoration: none; color: var(--text-dark); padding: 8px 16px; border-radius: 10px; font-weight: 500; transition: all 0.3s; }
+        .nav-links a { text-decoration: none; color: var(--text-dark); padding: 8px 16px; border-radius: 10px; font-weight: 500; transition: var(--transition); }
         .nav-links a:hover { background: var(--light-2); color: var(--primary); }
         .nav-actions { display: flex; align-items: center; gap: 12px; }
-        .theme-toggle { width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--light-2); background: transparent; cursor: pointer; font-size: 1.2rem; transition: all 0.3s; }
+        .theme-toggle { width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--light-2); background: transparent; cursor: pointer; font-size: 1.2rem; transition: var(--transition); }
         .theme-toggle:hover { border-color: var(--primary); color: var(--primary); transform: rotate(180deg); }
         .nav-btn { padding: 10px 24px; background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; border: none; border-radius: 50px; font-weight: 600; cursor: pointer; }
         
@@ -64,7 +63,7 @@
         
         /* Tools Grid */
         .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
-        .tool-card { background: white; border-radius: var(--radius); padding: 32px 24px; text-align: center; cursor: pointer; transition: all 0.3s; border: 1px solid var(--light-2); position: relative; overflow: hidden; }
+        .tool-card { background: white; border-radius: var(--radius); padding: 32px 24px; text-align: center; cursor: pointer; transition: var(--transition); border: 1px solid var(--light-2); position: relative; overflow: hidden; }
         .tool-card:hover { transform: translateY(-8px); box-shadow: var(--shadow); }
         .tool-icon { width: 72px; height: 72px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin: 0 auto 20px; }
         .tool-icon.red { background: rgba(239,68,68,0.1); color: var(--danger); }
@@ -88,7 +87,7 @@
         .workspace-body { max-width: 900px; margin: -40px auto 60px; padding: 0 40px; }
         
         /* Upload */
-        .upload-area { background: white; border-radius: 24px; padding: 60px 40px; text-align: center; border: 2px dashed var(--light-2); transition: all 0.3s; }
+        .upload-area { background: white; border-radius: 24px; padding: 60px 40px; text-align: center; border: 2px dashed var(--light-2); transition: var(--transition); }
         .upload-area.dragover { border-color: var(--primary); background: rgba(99,102,241,0.03); }
         .upload-area.has-files { border-style: solid; border-color: var(--accent); }
         .upload-icon { width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(6,182,212,0.1)); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 24px; animation: bounce 2s infinite; }
@@ -155,6 +154,9 @@
         .toast.warning { border-left-color: var(--warning); }
         @keyframes slideInRight { from { opacity: 0; transform: translateX(100px); } to { opacity: 1; transform: translateX(0); } }
         
+        /* Footer */
+        .footer { background: var(--dark); color: white; padding: 60px 40px 40px; text-align: center; }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .navbar { padding: 0 20px; }
@@ -181,7 +183,7 @@
         </ul>
         <div class="nav-actions">
             <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
-            <button class="nav-btn" onclick="showToast('Yakında!', 'info')">Giriş Yap</button>
+            <button class="nav-btn" onclick="showToast('Yakında aktif olacak!', 'info')">Giriş Yap</button>
         </div>
     </nav>
 
@@ -192,9 +194,9 @@
             <div class="hero-content">
                 <div class="hero-badge">✨ 100% Ücretsiz & Güvenli</div>
                 <h1>PDF Araçlarınız <span>Tek Platformda</span></h1>
-                <p>PDF dönüştürme, sıkıştırma, birleştirme ve daha fazlası. Hızlı, güvenli ve tarayıcı tabanlı.</p>
+                <p>PDF dönüştürme, sıkıştırma, birleştirme ve daha fazlası. Hızlı, güvenli ve tamamen tarayıcı tabanlı.</p>
                 <div class="hero-buttons">
-                    <a href="#tools" class="btn btn-primary">🚀 Araçları Keşfet</a>
+                    <a href="#tools" class="btn btn-primary"> Araçları Keşfet</a>
                     <a href="#features" class="btn btn-outline">Daha Fazla Bilgi</a>
                 </div>
                 <div class="hero-stats">
@@ -222,7 +224,7 @@
                 <div class="tool-card" onclick="openTool('pdf-to-excel')"><div class="tool-icon green">📊</div><div class="tool-name">PDF → Excel</div><div class="tool-desc">Excel tablosuna çevir</div></div>
                 <div class="tool-card" onclick="openTool('pdf-to-ppt')"><div class="tool-icon orange">📽️</div><div class="tool-name">PDF → PowerPoint</div><div class="tool-desc">Sunuma çevir</div></div>
                 <div class="tool-card" onclick="openTool('pdf-to-jpg')"><div class="tool-icon blue">🖼️</div><div class="tool-name">PDF → JPG</div><div class="tool-desc">Resme dönüştür</div></div>
-                <div class="tool-card" onclick="openTool('jpg-to-pdf')"><div class="tool-icon orange">📸</div><div class="tool-name">JPG → PDF</div><div class="tool-desc">Resimleri PDF yap</div></div>
+                <div class="tool-card" onclick="openTool('jpg-to-pdf')"><div class="tool-icon orange"></div><div class="tool-name">JPG → PDF</div><div class="tool-desc">Resimleri PDF yap</div></div>
                 <div class="tool-card" onclick="openTool('protect')"><div class="tool-icon red">🔒</div><div class="tool-name">PDF Şifrele</div><div class="tool-desc">Parola ile koru</div><span class="tool-badge new">Yeni</span></div>
                 <div class="tool-card" onclick="openTool('unlock')"><div class="tool-icon blue">🔓</div><div class="tool-name">PDF Kilidini Aç</div><div class="tool-desc">Şifreyi kaldır</div></div>
                 <div class="tool-card" onclick="openTool('sign')"><div class="tool-icon green">✍️</div><div class="tool-name">PDF İmzala</div><div class="tool-desc">Dijital imza ekle</div></div>
@@ -242,13 +244,13 @@
             </div>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
                 <div style="background: white; padding: 32px; border-radius: 16px;"><div style="font-size: 2.5rem; margin-bottom: 16px;">🔒</div><h3 style="margin-bottom: 8px;">Güvenli</h3><p style="color: var(--text-light);">256-bit SSL şifreleme. Dosyalarınız otomatik silinir.</p></div>
-                <div style="background: white; padding: 32px; border-radius: 16px;"><div style="font-size: 2.5rem; margin-bottom: 16px;">⚡</div><h3 style="margin-bottom: 8px;">Hızlı</h3><p style="color: var(--text-light);">Saniyeler içinde sonuç alın.</p></div>
-                <div style="background: white; padding: 32px; border-radius: 16px;"><div style="font-size: 2.5rem; margin-bottom: 16px;">💻</div><h3 style="margin-bottom: 8px;">Kolay</h3><p style="color: var(--text-light);">Hiçbir yazılım gerekmez.</p></div>
+                <div style="background: white; padding: 32px; border-radius: 16px;"><div style="font-size: 2.5rem; margin-bottom: 16px;">⚡</div><h3 style="margin-bottom: 8px;">Hızlı</div><p style="color: var(--text-light);">Saniyeler içinde sonuç alın.</p></div>
+                <div style="background: white; padding: 32px; border-radius: 16px;"><div style="font-size: 2.5rem; margin-bottom: 16px;">💻</div><h3 style="margin-bottom: 8px;">Kolay</div><p style="color: var(--text-light);">Hiçbir yazılım gerekmez.</p></div>
             </div>
         </section>
 
         <!-- Footer -->
-        <footer style="background: var(--dark); color: white; padding: 60px 40px 40px; text-align: center;">
+        <footer class="footer">
             <div style="font-size: 1.5rem; font-weight: 700; margin-bottom: 16px;">AleePDF</div>
             <p style="color: rgba(255,255,255,0.6); margin-bottom: 24px;">© 2026 AleePDF. Tüm hakları saklıdır.</p>
         </footer>
@@ -266,7 +268,7 @@
                 <div class="upload-icon">📄</div>
                 <div class="upload-title">Dosyaları Sürükleyin veya Seçin</div>
                 <div class="upload-subtitle">PDF, Word, Excel, JPG ve daha fazlası</div>
-                <button class="upload-btn" onclick="document.getElementById('fileInput').click()">📁 Dosya Seç</button>
+                <button class="upload-btn" onclick="document.getElementById('fileInput').click()"> Dosya Seç</button>
                 <input type="file" id="fileInput" multiple class="upload-input">
                 <div class="upload-formats" id="uploadFormats">Tüm formatlar desteklenir</div>
                 <div class="file-list" id="fileList"></div>
@@ -309,7 +311,7 @@
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
         
         // State
-        const state = { currentTool: null, files: [], settings: {}, processedBlob: null };
+        const state = { currentTool: null, files: [], settings: {}, processedBlob: null, isProcessing: false };
         
         // Tool configurations
         const tools = {
@@ -336,7 +338,7 @@
         // Theme toggle
         function toggleTheme() {
             document.body.classList.toggle('dark-mode');
-            event.target.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+            document.querySelector('.theme-toggle').textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
         }
 
         // Show home
@@ -354,6 +356,7 @@
             state.currentTool = toolId;
             state.files = [];
             state.processedBlob = null;
+            state.settings = {};
             
             document.getElementById('workspaceTitle').textContent = tool.title;
             document.getElementById('workspaceDesc').textContent = tool.desc;
@@ -365,13 +368,13 @@
             document.getElementById('fileList').innerHTML = '';
             document.getElementById('resultArea').classList.remove('active');
             document.getElementById('resultArea').style.display = 'none';
-            document.getElementById('actionArea').style.display = 'none';
             document.getElementById('uploadArea').style.display = 'block';
+            document.getElementById('processBtn').disabled = false;
             
             // Build settings
             const settingsPanel = document.getElementById('settingsPanel');
             if (tool.settings && tool.settings.length > 0) {
-                let html = '<div class="settings-title">⚙️ Ayarlar</div>';
+                let html = '<div class="settings-title">️ Ayarlar</div>';
                 tool.settings.forEach(s => {
                     html += '<div class="setting-row"><div class="setting-label">' + s.label + '</div><div class="setting-control">';
                     if (s.type === 'select') {
@@ -410,11 +413,15 @@
 
         function handleFiles(files) {
             const tool = tools[state.currentTool];
-            if (!tool) return;
+            if (!tool || state.isProcessing) return;
             
             files.forEach(file => {
                 if (state.files.length >= tool.maxFiles) {
                     showToast('Maksimum ' + tool.maxFiles + ' dosya', 'warning');
+                    return;
+                }
+                if (file.size > 50 * 1024 * 1024) {
+                    showToast('Dosya çok büyük (max 50MB)', 'warning');
                     return;
                 }
                 const ext = file.name.split('.').pop().toLowerCase();
@@ -433,11 +440,12 @@
             const list = document.getElementById('fileList');
             const item = document.createElement('div');
             item.className = 'file-item';
-            item.innerHTML = '<div class="file-item-icon">📄</div><div class="file-item-info"><div class="file-item-name">' + file.name + '</div><div class="file-item-size">' + formatSize(file.size) + '</div></div><button class="file-item-remove" onclick="removeFile(\'' + file.name + '\")">✕</button>';
+            item.innerHTML = '<div class="file-item-icon"></div><div class="file-item-info"><div class="file-item-name">' + file.name + '</div><div class="file-item-size">' + formatSize(file.size) + '</div></div><button class="file-item-remove" onclick="removeFile(\'' + file.name + '\')">✕</button>';
             list.appendChild(item);
         }
 
         function removeFile(name) {
+            if (state.isProcessing) return;
             state.files = state.files.filter(f => f.name !== name);
             document.getElementById('fileList').innerHTML = '';
             state.files.forEach(addFileToList);
@@ -445,7 +453,6 @@
         }
 
         function updateUI() {
-            const tool = tools[state.currentTool];
             if (state.files.length > 0) {
                 document.getElementById('uploadArea').classList.add('has-files');
                 document.querySelector('.upload-title').textContent = state.files.length + ' dosya seçildi';
@@ -455,11 +462,7 @@
                 document.querySelector('.upload-title').textContent = 'Dosyaları Sürükleyin veya Seçin';
                 document.getElementById('actionArea').style.display = 'none';
             }
-            if (state.currentTool === 'merge' && state.files.length < 2) {
-                document.getElementById('processBtn').disabled = true;
-            } else {
-                document.getElementById('processBtn').disabled = false;
-            }
+            document.getElementById('processBtn').disabled = state.files.length === 0 || (state.currentTool === 'merge' && state.files.length < 2);
         }
 
         function formatSize(bytes) {
@@ -470,12 +473,36 @@
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
 
-        // Process files - MAIN FUNCTION
+        // Collect settings from DOM
+        function collectSettings() {
+            const tool = tools[state.currentTool];
+            state.settings = {};
+            if (tool && tool.settings) {
+                tool.settings.forEach(s => {
+                    const el = document.getElementById(s.id);
+                    if (el) state.settings[s.id] = el.value;
+                });
+            }
+        }
+
+        // Update progress UI
+        function updateProgress(percent, text = '') {
+            document.getElementById('progressBar').style.width = percent + '%';
+            document.getElementById('progressPercent').textContent = Math.round(percent) + '%';
+            if (text) document.getElementById('progressText').textContent = text;
+        }
+
+        // Main Processing Function
         async function processFiles() {
-            if (!state.files.length) { showToast('Dosya seçin', 'warning'); return; }
+            if (state.files.length === 0 || state.isProcessing) return;
+            
+            collectSettings();
+            state.isProcessing = true;
+            document.getElementById('processBtn').disabled = true;
             
             const overlay = document.getElementById('progressOverlay');
             overlay.classList.add('active');
+            document.getElementById('progressTitle').textContent = tools[state.currentTool].title;
             
             try {
                 const { PDFDocument, rgb, StandardFonts } = PDFLib;
@@ -485,8 +512,7 @@
                 if (state.currentTool === 'merge') {
                     const mergedPdf = await PDFDocument.create();
                     for (let i = 0; i < state.files.length; i++) {
-                        const file = state.files[i];
-                        const arrayBuffer = await file.arrayBuffer();
+                        const arrayBuffer = await state.files[i].arrayBuffer();
                         const pdf = await PDFDocument.load(arrayBuffer);
                         const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
                         copiedPages.forEach(page => mergedPdf.addPage(page));
@@ -503,18 +529,16 @@
                     const numPages = pdf.getPageCount();
                     
                     if (state.settings.mode === 'each') {
-                        // Her sayfayı ayrı PDF yap
-                        const blobs = [];
                         for (let i = 0; i < numPages; i++) {
                             const newPdf = await PDFDocument.create();
                             const [copiedPage] = await newPdf.copyPages(pdf, [i]);
                             newPdf.addPage(copiedPage);
                             const pdfBytes = await newPdf.save();
-                            blobs.push(new Blob([pdfBytes], { type: 'application/pdf' }));
+                            // İlkini state'e kaydet, diğerlerini sırayla indir
+                            if (i === 0) resultBlob = new Blob([pdfBytes], { type: 'application/pdf' });
+                            else setTimeout(() => downloadBlob(new Blob([pdfBytes], { type: 'application/pdf' }), `sayfa_${i+1}.pdf`), 500 * i);
                             updateProgress(((i + 1) / numPages) * 100);
                         }
-                        // İlkini indir, sonrakileri zip yap (basit versiyon)
-                        resultBlob = blobs[0];
                     }
                 }
                 
@@ -534,12 +558,13 @@
                     resultBlob = new Blob([pdfBytes], { type: 'application/pdf' });
                 }
                 
-                // COMPRESS (basit - kalite düşürme)
+                // COMPRESS
                 else if (state.currentTool === 'compress') {
                     const arrayBuffer = await state.files[0].arrayBuffer();
                     const pdf = await PDFDocument.load(arrayBuffer);
-                    // PDF-lib ile compression sınırlı, sadece yeniden kaydet
-                    const pdfBytes = await pdf.save({ useObjectStreams: true });
+                    const quality = state.settings.quality || 'medium';
+                    // PDF-lib ile temel optimizasyon
+                    const pdfBytes = await pdf.save({ useObjectStreams: true, objectsPerTick: 50 });
                     resultBlob = new Blob([pdfBytes], { type: 'application/pdf' });
                 }
                 
@@ -550,7 +575,6 @@
                     const dpi = parseInt(state.settings.dpi) || 150;
                     const scale = dpi / 72;
                     
-                    // İlk sayfayı JPG yap (demo için)
                     const page = await pdf.getPage(1);
                     const viewport = page.getViewport({ scale });
                     const canvas = document.createElement('canvas');
@@ -573,10 +597,12 @@
                         const arrayBuffer = await file.arrayBuffer();
                         let image;
                         
-                        if (file.type === 'image/jpeg') {
+                        if (file.type === 'image/jpeg' || file.name.toLowerCase().endsWith('.jpg') || file.name.toLowerCase().endsWith('.jpeg')) {
                             image = await pdfDoc.embedJpg(arrayBuffer);
-                        } else if (file.type === 'image/png') {
+                        } else if (file.type === 'image/png' || file.name.toLowerCase().endsWith('.png')) {
                             image = await pdfDoc.embedPng(arrayBuffer);
+                        } else {
+                            throw new Error('Desteklenmeyen resim formatı');
                         }
                         
                         const page = pdfDoc.addPage([image.width, image.height]);
@@ -588,13 +614,13 @@
                     resultBlob = new Blob([pdfBytes], { type: 'application/pdf' });
                 }
                 
-                // PROTECT (şifre ekle)
+                // PROTECT
                 else if (state.currentTool === 'protect') {
                     const arrayBuffer = await state.files[0].arrayBuffer();
                     const pdf = await PDFDocument.load(arrayBuffer);
                     const pdfBytes = await pdf.save({
-                        userPassword: state.settings.password,
-                        ownerPassword: state.settings.password + '_owner'
+                        userPassword: state.settings.password || '1234',
+                        ownerPassword: (state.settings.password || '1234') + '_owner'
                     });
                     resultBlob = new Blob([pdfBytes], { type: 'application/pdf' });
                 }
@@ -624,85 +650,6 @@
                     resultBlob = new Blob([pdfBytes], { type: 'application/pdf' });
                 }
                 
-                // PDF TO WORD/EXCEL/PPT (basit text extraction)
-                else if (['pdf-to-word', 'pdf-to-excel', 'pdf-to-ppt'].includes(state.currentTool)) {
-                    // Gerçek dönüşüm için backend gerekir, bu demo
-                    const arrayBuffer = await state.files[0].arrayBuffer();
-                    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-                    let fullText = '';
-                    
-                    for (let i = 1; i <= pdf.numPages; i++) {
-                        const page = await pdf.getPage(i);
-                        const textContent = await page.getTextContent();
-                        const pageText = textContent.items.map(item => item.str).join(' ');
-                        fullText += pageText + '\n\n';
-                        updateProgress((i / pdf.numPages) * 50);
-                    }
-                    
-                    // Basit DOCX oluştur (ZIP formatında)
-                    const docContent = `<?xml version="1.0" encoding="UTF-8"?>
-<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
-<w:body><w:p><w:r><w:t>${fullText.substring(0, 1000)}</w:t></w:r></w:p></w:body>
-</w:document>`;
-                    
-                    resultBlob = new Blob([docContent], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
-                }
-                
-                // WORD TO PDF (basit)
-                else if (state.currentTool === 'word-to-pdf') {
-                    // Gerçek dönüşüm zor, basit metin PDF'i oluştur
-                    const text = await state.files[0].text();
-                    const pdfDoc = await PDFDocument.create();
-                    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-                    const page = pdfDoc.addPage();
-                    const { width, height } = page.getSize();
-                    
-                    page.drawText(text.substring(0, 1000), {
-                        x: 50, y: height - 50, size: 12, font: font, maxWidth: width - 100
-                    });
-                    
-                    const pdfBytes = await pdfDoc.save();
-                    resultBlob = new Blob([pdfBytes], { type: 'application/pdf' });
-                }
-                
-                // HTML TO PDF
-                else if (state.currentTool === 'html-to-pdf') {
-                    const html = await state.files[0].text();
-                    const pdfDoc = await PDFDocument.create();
-                    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-                    const page = pdfDoc.addPage();
-                    
-                    page.drawText(html.substring(0, 1000), { x: 50, y: 500, size: 10, font: font });
-                    
-                    const pdfBytes = await pdfDoc.save();
-                    resultBlob = new Blob([pdfBytes], { type: 'application/pdf' });
-                }
-                
-                // SIGN (basit imza)
-                else if (state.currentTool === 'sign') {
-                    const arrayBuffer = await state.files[0].arrayBuffer();
-                    const pdf = await PDFDocument.load(arrayBuffer);
-                    const font = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-                    const pages = pdf.getPages();
-                    const lastPage = pages[pages.length - 1];
-                    const { width, height } = lastPage.getSize();
-                    
-                    lastPage.drawText('Digitally Signed by AleePDF', {
-                        x: 50, y: 50, size: 10, font: font, color: rgb(0, 0, 1)
-                    });
-                    
-                    const pdfBytes = await pdf.save();
-                    resultBlob = new Blob([pdfBytes], { type: 'application/pdf' });
-                }
-                
-                // UNLOCK, REPAIR, ORGANIZE (basit kopyalama)
-                else if (['unlock', 'repair', 'organize'].includes(state.currentTool)) {
-                    const arrayBuffer = await state.files[0].arrayBuffer();
-                    const pdf = await PDFDocument.load(arrayBuffer);
-                    const pdfBytes = await pdf.save();
-                    resultBlob = new Blob([pdfBytes], { type: 'application/pdf' });
-                }
-                
                 // PAGE NUMBERS
                 else if (state.currentTool === 'page-numbers') {
                     const arrayBuffer = await state.files[0].arrayBuffer();
@@ -722,6 +669,69 @@
                     resultBlob = new Blob([pdfBytes], { type: 'application/pdf' });
                 }
                 
+                // SIGN
+                else if (state.currentTool === 'sign') {
+                    const arrayBuffer = await state.files[0].arrayBuffer();
+                    const pdf = await PDFDocument.load(arrayBuffer);
+                    const font = await pdf.embedFont(StandardFonts.HelveticaBold);
+                    const pages = pdf.getPages();
+                    const lastPage = pages[pages.length - 1];
+                    
+                    lastPage.drawText('Digitally Signed by AleePDF | ' + new Date().toLocaleDateString('tr-TR'), {
+                        x: 50, y: 50, size: 10, font: font, color: rgb(0, 0, 1)
+                    });
+                    
+                    const pdfBytes = await pdf.save();
+                    resultBlob = new Blob([pdfBytes], { type: 'application/pdf' });
+                }
+                
+                // UNLOCK / REPAIR / ORGANIZE (Temel yeniden kayıt)
+                else if (['unlock', 'repair', 'organize'].includes(state.currentTool)) {
+                    const arrayBuffer = await state.files[0].arrayBuffer();
+                    const pdf = await PDFDocument.load(arrayBuffer);
+                    const pdfBytes = await pdf.save();
+                    resultBlob = new Blob([pdfBytes], { type: 'application/pdf' });
+                }
+                
+                // WORD/EXCEL/PPT/HTML → PDF (Basit metin tabanlı dönüşüm)
+                else if (['word-to-pdf', 'html-to-pdf'].includes(state.currentTool)) {
+                    const text = await state.files[0].text();
+                    const pdfDoc = await PDFDocument.create();
+                    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+                    const page = pdfDoc.addPage();
+                    const { width, height } = page.getSize();
+                    
+                    page.drawText(text.substring(0, 2000), {
+                        x: 50, y: height - 50, size: 12, font: font, maxWidth: width - 100
+                    });
+                    
+                    const pdfBytes = await pdfDoc.save();
+                    resultBlob = new Blob([pdfBytes], { type: 'application/pdf' });
+                }
+                
+                // PDF → WORD/EXCEL/PPT (Metin çıkarma)
+                else if (['pdf-to-word', 'pdf-to-excel', 'pdf-to-ppt'].includes(state.currentTool)) {
+                    const arrayBuffer = await state.files[0].arrayBuffer();
+                    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                    let fullText = '';
+                    
+                    for (let i = 1; i <= pdf.numPages; i++) {
+                        const page = await pdf.getPage(i);
+                        const textContent = await page.getTextContent();
+                        const pageText = textContent.items.map(item => item.str).join(' ');
+                        fullText += pageText + '\n\n';
+                        updateProgress((i / pdf.numPages) * 50);
+                    }
+                    
+                    // Basit DOCX benzeri yapı
+                    const docContent = `<?xml version="1.0" encoding="UTF-8"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+<w:body><w:p><w:r><w:t>${fullText.substring(0, 5000)}</w:t></w:r></w:p></w:body>
+</w:document>`;
+                    
+                    resultBlob = new Blob([docContent], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+                }
+                
                 // Save result
                 state.processedBlob = resultBlob;
                 
@@ -737,7 +747,7 @@
                 
                 const originalSize = state.files.reduce((sum, f) => sum + f.size, 0);
                 const newSize = resultBlob.size;
-                const reduction = Math.round((1 - newSize/originalSize) * 100);
+                const reduction = originalSize > 0 ? Math.round((1 - newSize/originalSize) * 100) : 0;
                 
                 document.getElementById('resultDesc').innerHTML = 
                     '<strong>' + state.files.length + '</strong> dosya işlendi.<br>' +
@@ -749,39 +759,41 @@
             } catch (err) {
                 overlay.classList.remove('active');
                 showToast('Hata: ' + err.message, 'error');
-                console.error(err);
+                console.error('Processing Error:', err);
+            } finally {
+                state.isProcessing = false;
+                document.getElementById('processBtn').disabled = false;
             }
         }
 
-        function updateProgress(percent) {
-            document.getElementById('progressBar').style.width = percent + '%';
-            document.getElementById('progressPercent').textContent = Math.round(percent) + '%';
+        // Download helper
+        function downloadBlob(blob, filename) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
         }
 
         function downloadResult() {
             if (!state.processedBlob) return;
             
-            const tool = tools[state.currentTool];
             const ext = state.currentTool.includes('jpg') ? '.jpg' : 
                        state.currentTool.includes('word') ? '.docx' :
                        state.currentTool.includes('excel') ? '.xlsx' :
                        state.currentTool.includes('ppt') ? '.pptx' : '.pdf';
             
-            const url = URL.createObjectURL(state.processedBlob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'aleepdf-output' + ext;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            
+            downloadBlob(state.processedBlob, 'aleepdf-output' + ext);
             showToast('İndiriliyor... 📥', 'success');
         }
 
         function resetWorkspace() {
             state.files = [];
             state.processedBlob = null;
+            state.settings = {};
             document.getElementById('resultArea').classList.remove('active');
             document.getElementById('resultArea').style.display = 'none';
             document.getElementById('uploadArea').style.display = 'block';
@@ -799,19 +811,10 @@
             setTimeout(() => { toast.remove(); }, 4000);
         }
 
-        // Collect settings before process
-        const originalProcess = processFiles;
-        processFiles = async function() {
-            // Collect settings from UI
-            const tool = tools[state.currentTool];
-            if (tool && tool.settings) {
-                tool.settings.forEach(s => {
-                    const el = document.getElementById(s.id);
-                    if (el) state.settings[s.id] = el.value;
-                });
-            }
-            await originalProcess();
-        };
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('✅ AleePDF yüklendi ve hazır.');
+        });
     </script>
 </body>
 </html>
