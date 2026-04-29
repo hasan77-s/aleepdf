@@ -1,0 +1,11 @@
+{
+  "name": "aleepdf",
+  "version": "1.0.0",
+  "scripts": {
+    "deploy": "npx wrangler pages deploy public",
+    "dev": "npx wrangler pages dev public --port 8788"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}
